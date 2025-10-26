@@ -1,0 +1,60 @@
+
+programa ejercicio02
+procesos
+  proceso girar(E vecesGirar: numero)
+  comenzar
+    repetir vecesGirar
+      derecha
+  fin
+  proceso limpiarYInformar
+  variables
+    pap: numero
+  comenzar 
+    pap:= 0
+    repetir 19
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        pap:= pap + 1
+      mover
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      pap:= pap + 1
+    Informar('papeles juntados de este lado es igual a ', pap)
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot robot1
+  comenzar 
+    limpiarYInformar
+  fin
+  robot robot2
+  comenzar
+    girar(1)
+    limpiarYInformar
+  fin
+  robot robot3
+  comenzar
+    girar(2)
+    limpiarYInformar
+  fin
+  robot robot4
+  comenzar
+    girar(3)
+    limpiarYInformar
+  fin
+variables
+  r1: robot1
+  r2: robot2
+  r3: robot3
+  r4: robot4
+comenzar
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  AsignarArea(r4, ciudad)
+  Iniciar(r1, 10,10)
+  Iniciar(r2, 10,30)
+  Iniciar(r3, 30,30)
+  Iniciar(r4, 30,10)
+fin
