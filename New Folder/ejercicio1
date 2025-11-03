@@ -1,0 +1,104 @@
+programa ejercicio1
+procesos
+  proceso juntarFlores(ES flores: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:= flores+1
+  fin
+  proceso juntarPapeles(ES papeles: numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles:= papeles + 1
+  fin
+  proceso recogerEnEsqRandom(E inicioAv: numero; E inicioCa : numero; ES objeto: numero; E florero: boolean; E cantIteracion: numero)
+  variables
+    caRandom: numero
+    avRandom: numero
+  comenzar
+    objeto:= 0
+    repetir cantIteracion
+      si florero
+        Random(avRandom,1,5)
+        Random(caRandom, 1,10)
+        BloquearEsquina(avRandom, caRandom)
+        Pos(avRandom, caRandom)
+        juntarFlores(objeto)
+        Pos(inicioAv, inicioCa)
+        LiberarEsquina(avRandom, caRandom)
+      sino  
+        Random(avRandom,6, 10)
+        Random(caRandom, 1,9)
+        BloquearEsquina(avRandom, caRandom)
+        Pos(avRandom, caRandom)
+        juntarPapeles(objeto)
+        Pos(inicioAv, inicioCa)
+        LiberarEsquina(avRandom, caRandom)  
+  fin
+areas
+  esqCompartida: AreaC (10,10,10,10)
+  areaFloreros: AreaPC(1, 1, 5, 10)
+  areaPapeleros: AreaPC (6,1, 10, 9)
+  areaInicioR1: AreaP(6,10, 6,10)
+  areaInicioR2: AreaP(7,10,7,10)
+  areaInicioR3: AreaP(8,10, 8,10)
+  areaInicioR4: AreaP(9,10, 9,10)
+robots
+  robot robotFlorero
+  variables
+    avInicio: numero
+    caInicio: numero
+    flo:numero
+  comenzar
+    avInicio:= PosAv
+    caInicio:= PosCa
+    recogerEnEsqRandom(avInicio, caInicio, flo, V, 5)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    repetir flo
+      depositarFlor
+    Pos(avInicio, caInicio)
+    LiberarEsquina(10,10)
+  fin
+  robot robotPapelero
+  variables
+    pap: numero
+    avInicio: numero
+    caInicio: numero
+  comenzar
+    avInicio:= PosAv
+    caInicio:= PosCa
+    recogerEnEsqRandom(avInicio, caInicio, pap, F, 3)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    repetir pap
+      depositarPapel
+    Pos(avInicio, caInicio)
+    LiberarEsquina(10,10)
+  fin
+variables
+  r1: robotFlorero
+  r2: robotFlorero
+  r3: robotPapelero
+  r4: robotPapelero
+comenzar
+  AsignarArea(r1, areaInicioR1)
+  AsignarArea(r2, areaInicioR2)
+  AsignarArea(r3, areaInicioR3)
+  AsignarArea(r4, areaInicioR4)
+  
+  AsignarArea(r1, esqCompartida)
+  AsignarArea(r2, esqCompartida)
+  AsignarArea(r3, esqCompartida)
+  AsignarArea(r4, esqCompartida)
+  
+  AsignarArea(r1, areaFloreros)
+  AsignarArea(r2, areaFloreros)
+  AsignarArea(r3, areaPapeleros)
+  AsignarArea(r4, areaPapeleros)
+  Iniciar(r1, 6,10)
+  Iniciar(r2, 7,10)
+  Iniciar(r3, 8,10)
+  Iniciar(r4, 9,10)
+fin
