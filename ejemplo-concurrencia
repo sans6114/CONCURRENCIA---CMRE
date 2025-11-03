@@ -1,0 +1,42 @@
+programa ejemplo
+procesos
+  proceso juntarFlores( ES flo: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flo:= flo + 1
+  fin
+  proceso recorrerCuadrado(E alto: numero; E ancho: numero; ES flores: numero)
+  comenzar
+    repetir 2
+      repetir alto
+        juntarFlores(flores)
+        mover
+      derecha
+      repetir ancho
+        juntarFlores(flores)
+        mover
+      derecha
+  fin
+areas
+  ciudad: AreaC (1,1,10,10)
+  ciudadPrivada: AreaP(12, 1, 22, 10)
+robots
+  robot robot1
+  variables
+    flores: numero
+  comenzar
+    flores:= 0
+    recorrerCuadrado(9, 9, flores)
+    Informar(flores)
+  fin
+variables
+  R_info: robot1
+  R_info2: robot1
+comenzar
+  {esto es un comentario}
+  AsignarArea(R_info, ciudad)
+  AsignarArea(R_info2, ciudadPrivada)
+  Iniciar(R_info, 1,1)
+  Iniciar(R_info2, 12, 1)
+fin
