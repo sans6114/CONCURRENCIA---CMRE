@@ -1,0 +1,141 @@
+programa ejercicio1
+procesos
+  proceso juntarFlores(ES flores: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flores:= flores+ 1
+  fin
+  proceso juntarPapeles (ES papeles: numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      papeles:= papeles + 1
+  fin
+  proceso izquierda
+  comenzar
+    repetir 3 
+      derecha
+  fin
+  proceso moverCompartida(E id: numero; E right: boolean)
+  comenzar 
+    mover
+    si right
+      izquierda
+    sino
+      derecha
+    BloquearEsquina(16,16)
+    mover
+    EnviarMensaje(id, r3)
+    repetir 2
+      derecha
+    mover
+    LiberarEsquina(16,16)
+  fin
+  proceso hacerEscalonYEvaluarFlo(E asc: boolean; ES altura: numero; ES flores: numero)
+  comenzar
+    repetir altura
+      mover
+    juntarFlores(flores)
+    derecha
+    repetir altura
+      mover
+    juntarFlores(flores)
+    izquierda
+    si asc 
+      altura:= altura + 1
+    sino 
+      altura:= altura - 1
+  fin
+  proceso hacerEscalonYEvaluarPap(E asc: boolean; ES altura: numero; ES papeles: numero)
+  comenzar
+    repetir altura
+      mover
+    juntarPapeles(papeles)
+    izquierda
+    repetir altura
+      mover
+    juntarPapeles(papeles)
+    derecha
+    si asc 
+      altura:= altura + 1
+    sino 
+      altura:= altura - 1
+  fin
+  proceso figuraEscalonadaC1
+  variables
+    alturaEsc: numero
+    flores: numero
+  comenzar
+    alturaEsc:= 4
+    flores:= 0
+    mientras (alturaEsc > 1)
+      hacerEscalonYEvaluarFlo(F, alturaEsc, flores)
+    moverCompartida(1, F)
+    alturaEsc:= 2
+    mientras (alturaEsc < 5)
+      hacerEscalonYEvaluarFlo(V, alturaEsc, flores)
+    Informar(flores)
+  fin
+  proceso figuraEscalonadaC2
+  variables
+    alturaEsc: numero
+    papeles: numero
+  comenzar
+    alturaEsc:= 4
+    papeles:= 0
+    mientras (alturaEsc > 1)
+      hacerEscalonYEvaluarPap(F, alturaEsc, papeles)
+    moverCompartida(2, V)
+    alturaEsc:= 2
+    mientras (alturaEsc < 5)
+      hacerEscalonYEvaluarPap(V, alturaEsc, papeles)
+    Informar(papeles)
+  fin
+areas
+  esqCompartida: AreaPC (11,11,11,11)
+  areaR1: AreaP (1,1,10, 30)
+  areaR2: AreaP(12, 1, 22, 30)
+  areaFiscal: AreaP(11,1, 11,1)
+robots
+  robot fiscal
+  variables
+    id: numero
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2, r2)
+    RecibirMensaje(id, *)
+    si id = 1
+      Informar('llego primero r1', id)
+    sino 
+      Informar('llego primero r2', id)
+  fin
+  robot corredor1
+  variables
+    id: numero
+  comenzar
+    RecibirMensaje(id, r3)
+    figuraEscalonadaC1
+  fin
+  robot corredor2
+  variables
+    id: numero
+  comenzar
+    RecibirMensaje(id, r3)
+    figuraEscalonadaC2
+  fin
+variables
+  r1: corredor1
+  r2: corredor2
+  r3: fiscal
+comenzar
+  AsignarArea(r1, areaR1)
+  AsignarArea(r1, esqCompartida)
+  AsignarArea(r2, areaR2)
+  AsignarArea(r2, esqCompartida)
+  AsignarArea(r3, areaFiscal)
+
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 22,1)
+  Iniciar(r3, 11,1)
+fin
