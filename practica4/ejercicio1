@@ -1,0 +1,115 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso enviarId
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+areas
+  esquinaServidor: AreaP (100,100,100,100)
+  areaR1: AreaPC(1,1,1,100)
+  areaR2: AreaPC(2,1,2,100)
+  areaR3: AreaPC(3,1,3,100)
+robots
+  robot robotCliente
+  variables
+    avInicio: numero
+    caSig: numero
+    floRandom: numero
+    sigIteracion: boolean
+  comenzar
+    RecibirMensaje(id, rServidor)
+    avInicio:= PosAv
+    mientras PosCa < 100
+      caActual:= PosCa
+      Random(floRandom, 1,4)
+      EnviarMensaje(id, rServidor)
+      EnviarMensaje(floRandom, rServidor)
+      EnviarMensaje(avInicio, rServidor)
+      EnviarMensaje(caActual+1, rServidor)
+      RecibirMensaje(sigIteracion, rServidor)
+      mover
+      repetir floRandom
+        tomarFlor
+      Pos(avIncio, caActual)
+      repetir floRandom
+        si PosCa < 100
+          depositarFlor
+          mover
+    si HayFlorEnLaBolsa
+      depositarFlor {si me quedan flores en la bolsa directamente deposito esa.}
+    sino
+      Pos(avInicio, 99)
+      EnviarMensaje(id, rServidor)
+      EnviarMensaje(1, rServidor) {pido solo 1 flor porque es la faltante}
+      EnviarMensaje(avInicio, rServidor)
+      EnviarMensaje(100, rServidor)
+      RecibirMensaje(sigIteracion, rServidor)
+      mover
+      depositarFlor  
+    EnviarMensaje(id, rServidor)
+    EnviarMensaje(0, rServidor)       
+  fin
+  robot robotServidor
+  variables
+    cont: numero
+    id: numero
+    flores: numero
+  comenzar 
+    cont:= 0
+    enviarId
+    mientras cont <> 3
+      RecibirMensaje(id, *)
+      si (id = 1) 
+        RecibirMensaje(flores, r1)
+      sino
+        si(id = 2)
+          RecibirMensaje(flores, r2)
+        sino 
+          RecibirMensaje(flores, r3)
+      si (flores <> 0)
+        si (id = 1) 
+          RecibirMensaje(av, r1)
+          RecibirMensaje(ca,r1)
+        sino
+          si (id = 2)
+            RecibirMensaje(av, r2)
+            RecibirMensaje(ca,r2)
+          sino 
+            RecibirMensaje(av, r3)
+            RecibirMensaje(ca,r3)
+        Pos(av,ca)
+        repetir flores
+          depositarFlor
+        Pos(100,100)
+        si (id = 1) 
+          EnviarMensaje(V, r1)
+        sino
+          si (id = 2)
+            EnviarMensaje(V, r1)
+          sino 
+            EnviarMensaje(V, r2)
+      sino
+        cont:= cont + 1         
+  fin
+variables
+  rServidor: robotServidor
+  r1: robotCliente
+  r2: robotCliente
+  r3: robotCliente
+comenzar
+  AsignarArea(rServidor, esquinaServidor)
+  AsignarArea(r1,areaR1)
+  AsignarArea(r2,areaR2)
+  AsignarArea(r3,areaR3)
+  Iniciar(rServidor, 100,100)
+  Iniciar(r1, 1,1)
+  Iniciar(r2,2,1)
+  Iniciar(r3,3,1)
+fin
