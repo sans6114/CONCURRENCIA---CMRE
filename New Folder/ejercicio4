@@ -1,0 +1,70 @@
+
+programa ejemplo
+procesos
+  proceso enviarId
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot robotCoordinador
+  variables
+    id: numero
+    ultimoRobot: numero
+  comenzar
+    enviarId
+    repetir 4
+      RecibirMensaje(id, *)
+      ultimoRobot:= id
+    Informar(ultimoRobot)
+    BloquearEsquina(11,11)
+    Pos(11,11)
+    mientras HayFlorEnLaBolsa
+      depositarFlor
+    Pos(1,1)
+    LiberarEsquina(11,11)
+  fin
+  robot robotJuntador
+  variables
+    avInicio: numero
+    caInicio: numero
+    id: numero
+    noEstaVacia: boolean
+  comenzar
+    RecibirMensaje(id, rCoordinador)
+    avInicio:= PosAv
+    caInicio:= PosCa
+    noEstaVacia:= V
+    mientras noEstaVacia
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      si HayFlorEnLaEsquina
+        tomarFlor
+      sino
+        noEstaVacia:= F
+      Pos(avInicio,caInicio)
+      LiberarEsquina(10,10)
+    EnviarMensaje(id, rCoordinador)
+  fin
+variables
+  rCoordinador: robotCoordinador
+  r1: robotJuntador
+  r2: robotJuntador
+  r3: robotJuntador
+  r4: robotJuntador
+comenzar
+  AsignarArea(rCoordinador, ciudad)
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  AsignarArea(r4, ciudad)
+  Iniciar(rCoordinador, 1,1)
+  Iniciar(r1, 9,9)
+  Iniciar(r2, 9,10)
+  Iniciar(r3, 9,11)
+  Iniciar(r4, 9,12)
+fin
