@@ -19,8 +19,9 @@ areas
 robots
   robot robotCliente
   variables
+    id: numero
     avInicio: numero
-    caSig: numero
+    caActual: numero
     floRandom: numero
     sigIteracion: boolean
   comenzar
@@ -37,7 +38,7 @@ robots
       mover
       repetir floRandom
         tomarFlor
-      Pos(avIncio, caActual)
+      Pos(avInicio, caActual)
       repetir floRandom
         si PosCa < 100
           depositarFlor
@@ -58,13 +59,15 @@ robots
   fin
   robot robotServidor
   variables
+    av: numero
+    ca: numero
     cont: numero
     id: numero
     flores: numero
   comenzar 
     cont:= 0
     enviarId
-    mientras cont <> 3
+    mientras cont < 4
       RecibirMensaje(id, *)
       si (id = 1) 
         RecibirMensaje(flores, r1)
@@ -92,9 +95,9 @@ robots
           EnviarMensaje(V, r1)
         sino
           si (id = 2)
-            EnviarMensaje(V, r1)
-          sino 
             EnviarMensaje(V, r2)
+          sino 
+            EnviarMensaje(V, r3)
       sino
         cont:= cont + 1         
   fin
@@ -105,6 +108,9 @@ variables
   r3: robotCliente
 comenzar
   AsignarArea(rServidor, esquinaServidor)
+  AsignarArea(rServidor, areaR1)
+  AsignarArea(rServidor, areaR2)
+  AsignarArea(rServidor, areaR3)
   AsignarArea(r1,areaR1)
   AsignarArea(r2,areaR2)
   AsignarArea(r3,areaR3)
