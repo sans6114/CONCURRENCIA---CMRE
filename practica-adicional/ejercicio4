@@ -1,0 +1,143 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso juntarFlores(ES flo: numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      flo:= flo + 1
+  fin
+  proceso enviarSeguir(E r: numero)
+  comenzar
+    si (r = 1)
+      EnviarMensaje(F, r1)
+    sino
+      si (r = 2)
+        EnviarMensaje(F, r2)
+      sino
+        EnviarMensaje(F, r3)
+  fin
+  proceso dejarFlo(E flo: numero)
+  comenzar
+    repetir flo
+      depositarFlor
+  fin
+  proceso enviarId
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+  fin
+  proceso enviarEsq(E r: numero; E av: numero; E ca: numero)
+  comenzar
+    si (r = 1)
+      EnviarMensaje(av, r1)
+      EnviarMensaje(ca, r1)
+    sino
+      si(r = 2)
+        EnviarMensaje(av, r2)
+        EnviarMensaje(ca, r2)
+      sino
+        EnviarMensaje(av, r3)
+        EnviarMensaje(ca, r3)
+  fin
+  proceso enviarFin
+  comenzar
+    EnviarMensaje(V,r1)
+    EnviarMensaje(V,r2)
+    EnviarMensaje(V,r3)
+  fin
+areas
+  areaFlorero: AreaP (40,40,60,60)
+  esqDepositar: AreaP(10,10,10,10)
+  esqR1: AreaP(1,1,1,1)
+  esqR2: AreaP(2,1,2,1)
+  esqR3: AreaP(3,1,3,1)
+  areaFiscal: AreaP(4,1,4,1)
+robots
+  robot robotFiscal
+  variables
+    rRandom: numero
+    tot: numero
+    floPorR: numero
+    avRandom: numero
+    caRandom: numero
+  comenzar
+    tot:= 0
+    enviarId
+    repetir 8
+      Random(rRandom, 1,3)
+      Random(avRandom,40,60)
+      Random(caRandom, 40,60)
+      enviarSeguir(rRandom)
+      enviarEsq(rRandom, avRandom, caRandom)
+    enviarFin
+    repetir 8
+      RecibirMensaje(floPorR, *)
+      tot:= tot + floPorR
+    Informar(tot)
+  fin
+  robot robotFlorero
+  variables
+    id: numero
+    flo: numero
+    ultAV: numero
+    ultCA: numero
+    av: numero
+    ca: numero
+    avInicio: numero
+    caInicio: numero
+    termino: boolean
+    ok: boolean
+  comenzar
+    RecibirMensaje(id, rFiscal)
+    termino:= F
+    avInicio:= PosAv
+    caInicio:= PosCa
+    ultAV:= 1
+    flo:= 0
+    mientras (termino = F)
+      si (ultAV <> 1)
+        LiberarEsquina(ultAV, ultCA)
+      RecibirMensaje(termino, rFiscal)
+      RecibirMensaje(av, rFiscal)
+      RecibirMensaje(ca, rFiscal)
+      ultAV:= av
+      ultCA:= ca
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      juntarFlores(flo)
+    LiberarEsquina(ultAV, ultCA)
+    EnviarMensaje(flo, rFiscal)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    dejarFlo(flo)
+    Pos(avInicio, caInicio)
+    LiberarEsquina(10,10)
+  fin
+variables
+  rFiscal: robotFiscal
+  r1: robotFlorero
+  r2: robotFlorero
+  r3: robotFlorero
+comenzar
+  AsignarArea(r1, areaFlorero)
+  AsignarArea(r1, esqDepositar)
+  AsignarArea(r1,esqR1)
+  AsignarArea(r2, esqR2)
+  AsignarArea(r2, areaFlorero)
+  AsignarArea(r2, esqDepositar)
+  AsignarArea(r3, esqR3)
+  AsignarArea(r3, areaFlorero)
+  AsignarArea(r3, esqDepositar)
+  AsignarArea(rFiscal, areaFiscal)
+  
+  Iniciar(r1, 1,1)
+  Iniciar(r2,2,1)
+  Iniciar(r3,3,1)
+  Iniciar(rFiscal, 4,1)
+fin
