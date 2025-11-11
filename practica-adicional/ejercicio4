@@ -76,7 +76,7 @@ robots
       enviarSeguir(rRandom)
       enviarEsq(rRandom, avRandom, caRandom)
     enviarFin
-    repetir 8
+    repetir 3
       RecibirMensaje(floPorR, *)
       tot:= tot + floPorR
     Informar(tot)
@@ -95,7 +95,7 @@ robots
     ok: boolean
   comenzar
     RecibirMensaje(id, rFiscal)
-    termino:= F
+    RecibirMensaje(termino, rFiscal)
     avInicio:= PosAv
     caInicio:= PosCa
     ultAV:= 1
@@ -103,7 +103,6 @@ robots
     mientras (termino = F)
       si (ultAV <> 1)
         LiberarEsquina(ultAV, ultCA)
-      RecibirMensaje(termino, rFiscal)
       RecibirMensaje(av, rFiscal)
       RecibirMensaje(ca, rFiscal)
       ultAV:= av
@@ -111,13 +110,14 @@ robots
       BloquearEsquina(av,ca)
       Pos(av,ca)
       juntarFlores(flo)
+      RecibirMensaje(termino, rFiscal)
     LiberarEsquina(ultAV, ultCA)
-    EnviarMensaje(flo, rFiscal)
     BloquearEsquina(10,10)
     Pos(10,10)
     dejarFlo(flo)
     Pos(avInicio, caInicio)
     LiberarEsquina(10,10)
+    EnviarMensaje(flo, rFiscal)
   fin
 variables
   rFiscal: robotFiscal
