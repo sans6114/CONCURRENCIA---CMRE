@@ -1,0 +1,98 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+  proceso juntarPapeles
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+  fin
+  proceso vaciarBolsa
+  comenzar
+    mientras HayFlorEnLaBolsa
+      depositarFlor
+    mientras HayPapelEnLaBolsa
+      depositarPapel
+  fin
+  proceso ejecutarTarea(E t: numero)
+  comenzar
+    si t = 1
+      juntarFlores
+    sino
+      si t = 2
+        juntarPapeles
+      sino
+        vaciarBolsa
+  fin
+  proceso enviarTareaAleatoria(E rDestino: numero)
+  variables
+    tareaAleatoria: numero
+    avAleatoria: numero
+    caAleatoria: numero
+  comenzar
+    Random(tareaAleatoria, 1,3)
+    Random(avAleatoria, 2,100)
+    Random(caAleatoria, 2,100)
+    si rDestino = 1
+      EnviarMensaje(tareaAleatoria, r1)
+      EnviarMensaje(avAleatoria, r1)
+      EnviarMensaje(caAleatoria, r1)
+    sino
+      EnviarMensaje(tareaAleatoria, r2)
+      EnviarMensaje(avAleatoria, r2)
+      EnviarMensaje(caAleatoria, r2)      
+  fin
+areas
+  areaTrabajadores: AreaPC (2,1,100,100)
+  esquinaJefe: AreaP(1,1,1,1)
+robots
+  robot robotJefe
+  variables
+    numAleatorio: numero
+    tareaAleatoria: numero
+  comenzar
+    repetir 10
+      Random(numAleatorio, 1,2)
+      si numAleatorio = 1
+        enviarTareaAleatoria(1)
+      sino
+        enviarTareaAleatoria(2)
+    EnviarMensaje(4, r1)
+    EnviarMensaje(4,r2)
+  fin
+  robot robotTrabajador
+  variables
+    tarea: numero
+    av: numero
+    ca: numero
+  comenzar
+    RecibirMensaje(tarea, rJefe)
+    mientras tarea <> 4
+      RecibirMensaje(av, rJefe)
+      RecibirMensaje(ca, rJefe)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      ejecutarTarea(tarea)
+      RecibirMensaje(tarea, rJefe)
+      LiberarEsquina(av,ca)  
+  fin
+variables
+  rJefe: robotJefe
+  r1: robotTrabajador
+  r2: robotTrabajador
+comenzar
+  AsignarArea(rJefe, esquinaJefe)
+  AsignarArea(r1, areaTrabajadores)
+  AsignarArea(r2, areaTrabajadores)
+  Iniciar(rJefe, 1,1)
+  Iniciar(r1, 2,1)
+  Iniciar(r2, 3,1)
+fin

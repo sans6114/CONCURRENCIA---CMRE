@@ -53,6 +53,9 @@ robots
       EnviarMensaje(100, rServidor)
       RecibirMensaje(sigIteracion, rServidor)
       mover
+      tomarFlor
+      Pos(avInicio, 99)
+      mover
       depositarFlor  
     EnviarMensaje(id, rServidor)
     EnviarMensaje(0, rServidor)       
